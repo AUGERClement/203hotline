@@ -1,5 +1,8 @@
 #/bin/python3
 
+from math import exp, factorial
+import time
+
 def combinaison(n, k):
     if (n == 0 and k == 0):
         return (1)
@@ -26,25 +29,54 @@ def combi_of_a_set(n, k):
 
 def bino_and_poisson(d):
     p_succes = d / (8 * 3600) #a day is 8h
-    print(p_succes)
-    b_values = build_b_values(p_succes)
-    print_values(b_values, "Binomial")
-    p_values = build_p_values(p_succes)
-    print_values(p_values, "Poisson")
+    b_values, b_time = build_b_values(p_succes)
+    print_values(b_values, "Binomial", b_time)
+    print() #empty line for code
+    p_values, p_time = build_p_values(p_succes)
+    print_values(p_values, "Poisson", p_time)
     return
 
 def build_b_values(p_succes):
-    return [[0, 0]]
-
+    i = 0
+    values = []
+    tmp = 0.0
+    
+    start = time.time()
+    while (i <= 50):
+        tmp = iterative_calc(3500, i) * pow(p_succes, i) * pow((1 - p_succes), 3500 - i) 
+        values.append([i, tmp])
+        i += 1
+    end = time.time() #time for loop is in second
+    return values, ((end - start) * 1000)
 
 def build_p_values(p_succes):
-    return [[0, 0]]
+    i = 0
+    lamdba = 3500 * p_succes
+    values = []
+    tmp = 0.0
+    
+    start = time.time()
+    while (i <= 50):
+        tmp = (exp(-lamdba) * pow(lamdba, i)) / factorial(i)
+        values.append([i, tmp])
+        i += 1
+    end = time.time() #time for loop is in second
+    return values, ((end - start) * 1000)
 
-def print_values(values, method):
-    print(method, "distribution:", end='')
+def print_values(values, method, time):
+    i = 0
+
+    print(method, "distribution:")
     for pair in values:
         print(pair[0], "->", "%.3f" % pair[1], end='')
-        if (pair[0] - 1 % 6 == 0):
+        if (i == 5 or pair[0] == 50):
             print()
+            i = 0
         else:
             print(end='\t')
+            i += 1
+    print("overload: ", overload_calc(), "%", sep='')
+    print("computation time:", "%.2f" % time, "ms")
+
+def overload_calc():
+    return 0
