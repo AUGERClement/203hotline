@@ -1,0 +1,32 @@
+#!/bin/python3
+
+from os import sys
+from calcul import *
+
+def parser():
+    if (len(sys.argv) == 2):
+        try:
+            n = int(sys.argv[1])
+            k = None
+        except:
+            quit(84)
+    elif (len(sys.argv) == 3):
+        try:
+            n = int(sys.argv[1])
+            k = int(sys.argv[2])
+        except:
+            quit(84)
+    else:
+        quit(84)
+    if (n < 0 or (k != None and k < 0)):
+        quit(84)
+    elif (k > n):
+        quit(84)
+    return n, k
+
+n, k = parser()
+print("n =", n, "\nk =", k)
+if (k == None):
+    bino_and_poisson(n)
+else:
+    combi_of_a_set(n, k)
