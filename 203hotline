@@ -25,7 +25,6 @@ def parser():
     return n, k
 
 n, k = parser()
-print("n =", n, "\nk =", k)
 if (k == None):
     bino_and_poisson(n)
 else:
