@@ -75,8 +75,15 @@ def print_values(values, method, time):
         else:
             print(end='\t')
             i += 1
-    print("overload: ", overload_calc(), "%", sep='')
+    print("overload: ", "%.1f" % overload_calc(values), "%", sep='')
     print("computation time:", "%.2f" % time, "ms")
 
-def overload_calc():
-    return 0
+def overload_calc(values):
+    no_overload = 0.0
+    i = 0
+
+    while (i <= 25):
+        no_overload += values[i][1]
+        i += 1
+
+    return (1 - no_overload) * 100 # We need a percentage
